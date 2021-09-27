@@ -1,7 +1,6 @@
 package it.galli;
 
-import java.io.*;
-import java.net.*;
+
 
 /**
  * Hello world!
