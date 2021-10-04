@@ -1,5 +1,4 @@
 package it.galli;
-
 import java.io.*;
 import java.net.*;
 
@@ -40,6 +39,14 @@ public void comunica(){
         outVersoServer.writeBytes(stringaUtente+'\n');
         stringRicevutaDalServer=inDalServer.readLine();
         System.out.println("8... risposta dal server "+'\n'+stringRicevutaDalServer);
+        //chiudo la connessione
+        System.out.println("9 CLIENT: termina elaborazione e chiude connessione");
+        miosocket.close();
+    }
+    catch(Exception e){
+        System.out.println(e.getMessage());
+        System.out.println("Errore durante la comunicazione col server!");
+        System.exit(1);
     }
 
 }
