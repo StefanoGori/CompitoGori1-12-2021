@@ -1,4 +1,4 @@
-package it.galli;
+
 import java.io.*;
 import java.net.*;
 
@@ -49,6 +49,12 @@ public void comunica(){
         System.exit(1);
     }
 
+}
+public static void main( String[] args )
+{
+    Client cliente=new Client();
+    cliente.connetti();
+    cliente.comunica();
 }
 
 }

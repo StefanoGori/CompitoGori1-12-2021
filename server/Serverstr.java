@@ -18,7 +18,7 @@ public class Serverstr{
             client = server.accept();
             server.close();
             inDalClient = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            outVersoServer= new DataOutputStream(client.getOutputStream());
+            outVersoClient= new DataOutputStream(client.getOutputStream());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -43,6 +43,17 @@ public class Serverstr{
             System.out.println("9 SERVER: fine elaborazione... buona notte!");
             client.close();
         }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("Errore durante la comunicazione col client!");
+            System.exit(1);
+        }
+    }
+    public static void main( String[] args )
+    {
+        Serverstr servente = new Serverstr();
+        servente.attendi();
+        servente.comunica();
     }
 
 }
