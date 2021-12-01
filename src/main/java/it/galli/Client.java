@@ -20,7 +20,7 @@ public class Client {
             outVersoServer = new DataOutputStream(miosocket.getOutputStream());
             inDalServer = new BufferedReader(new InputStreamReader(miosocket.getInputStream()));
             stringRicevutaDalServer = inDalServer.readLine();
-            System.out.println("server: " + stringRicevutaDalServer);
+            System.out.println("S==> " + stringRicevutaDalServer);
         } catch (UnknownHostException e) {
             System.err.println("Host sconosciuto");
         } catch (Exception e) {
@@ -34,32 +34,21 @@ public class Client {
     public void comunica() {
         try {
             for (;;) {
-                // System.out.println("inserisci la nota da visualizzare o digita 'lista' per
-                // vedere gli oggetti inseriti:"+'\n');
                 stringRicevutaDalServer = inDalServer.readLine();
-                System.out.println("server 1: " + stringRicevutaDalServer);
+                System.out.println("S==> " + stringRicevutaDalServer);
                 stringaUtente = tastiera.readLine();
                 System.out.println("invio la stringa al server e attendo...");
-                outVersoServer.writeBytes(stringaUtente + '\n');
-                if (stringaUtente.equals("LISTA")) {
-                    for (;;) {
-                        stringRicevutaDalServer = inDalServer.readLine();
-                            if (stringRicevutaDalServer.equals("Fine")) {
-                                break;
-                            }
-                        System.out.println("server2: " + stringRicevutaDalServer);
-                        
-                    }
-                } else {
-                    stringRicevutaDalServer = inDalServer.readLine();
-                    System.out.println("server3: " + stringRicevutaDalServer);
+                outVersoServer.writeBytes(stringaUtente+'\n');
+                stringRicevutaDalServer = inDalServer.readLine();
+                if (stringRicevutaDalServer.equals("VITTORIA!")) {
+                    break;
                 }
-                // chiudo la connessione
-
-                // System.out.println("9 CLIENT: termina elaborazione e chiude connessione");
-                // miosocket.close();
+                System.out.println("S==>" + stringRicevutaDalServer);
+                stringRicevutaDalServer = inDalServer.readLine();
+                System.out.println("S==>" + stringRicevutaDalServer);              
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Errore durante la comunicazione col server!");
             System.exit(1);

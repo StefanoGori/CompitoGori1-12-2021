@@ -7,10 +7,11 @@ public class Serverstr{
     Socket client =null;
     String stringaRicevuta= null;
     String stringaModificata=null;
+    int stringaricevuta=0;
     BufferedReader inDalClient;
     DataOutputStream outVersoClient;
-    Vector <String> a= new Vector<String>();
-
+    Vector <Integer>a= new Vector<Integer>();
+    int b=1;
 
     public Socket attendi(){
         try{
@@ -33,37 +34,48 @@ public class Serverstr{
     public void comunica(){
         try{
             for(;;){
-            outVersoClient.writeBytes("inserisci la nota da visualizzare o digita LISTA per vedere gli oggetti inseriti:"+'\n');
-            //rimango in attesa della riga trasmessa dal client
-            stringaRicevuta= inDalClient.readLine();
-            if(stringaRicevuta.equals("LISTA")){
-                outVersoClient.writeBytes("la lista delle note è: "+'\n');
+                System.out.println(b+" bella");
+                System.out.println(b+" mando la richiesta del numero");
+                outVersoClient.writeBytes(b+" Dammi il numero estratto"+'\n');
+                //rimango in attesa della riga trasmessa dal client
+                stringaRicevuta= inDalClient.readLine();
+                System.out.println(b+" ricevuto numero");
+                System.out.println(stringaRicevuta);
+                //trasformo la stringa in int
+                stringaricevuta=Integer.parseInt(stringaRicevuta);
+                System.out.println(b+" stringa trasformata in int");
+                a.add(stringaricevuta);
+                System.out.println(b+" size vettore: "+a.size());
                 for(int i=0;i<a.size();i++){
-                    outVersoClient.writeBytes(a.get(i)+'\n');
+                    System.out.println(b+" entro nel for");
+                    if(stringaricevuta==a.get(i)){
+                        System.out.println(b+" if numero gia presente");
+                        outVersoClient.writeBytes(b+" ERRORE: numero gia' presente"+'\n');
+                        break;
+                    }
+                    else{
+                        System.out.println(b+" entro nell'else");
+                        a.add(stringaricevuta);
+                        Collections.sort(a);
+                        System.out.println(b+" stringa dal cliente: "+stringaRicevuta);
+                        outVersoClient.writeBytes(a+" I numeri estratti sono: "+'\n');
+                        for(i=0;i<a.size();i++){
+                            outVersoClient.writeBytes(a.get(i)+"-");
+                        }
+                        outVersoClient.writeBytes("\n");
+                        for(i=0;i<a.size();i++){
+                            if(a.get(i+1)-a.get(i)==1 && a.get(i+2)-a.get(i)==2 && a.get(i+3)-a.get(i)==3 && a.get(i+4)-a.get(i)==4){
+                                outVersoClient.writeBytes("VITTORIA!"+'\n');
+                                client.close();
+                            }
+                        }
+                        System.out.println(b+" esco dall'else");
+                        break;
+                    }
                 }
-                outVersoClient.writeBytes("Fine"+'\n');
-
+                System.out.println(b+" fuori for");
+                b++;
             }
-            else{
-                a.add(stringaRicevuta);
-                System.out.println("stringa dal cliente: "+stringaRicevuta);
-                outVersoClient.writeBytes("Nota salvata!"+'\n');
-            }
-            
-            
-
-
-            // //la modifico e la rispedisco al client
-            // stringaModificata=stringaRicevuta.toUpperCase();
-            // System.out.println("7 invio la stringa modificata al client...");
-            // outVersoClient.writeBytes(stringaModificata+'\n');
-
-            //termina elaborazione sul server: chiudo la connessione del client
-
-            // System.out.println("9 SERVER: fine elaborazione... buona notte!");
-            // client.close();
-            }
-
         }
         catch(Exception e){
             System.out.println(e.getMessage());
